@@ -7,7 +7,7 @@ void merge(std::vector<int>& vec, int begin, int mid, int end) {
   int left = begin;
   int right = mid+1;
   for (int i=0; i<tmp.size(); i++) { 
-    if (left > mid)
+	if (left > mid)
       tmp[i] = vec[right++];
     else if (right > end)
       tmp[i] = vec[left++];
@@ -16,15 +16,18 @@ void merge(std::vector<int>& vec, int begin, int mid, int end) {
     else
       tmp[i] = vec[right++]; 
   }
-  for (int i=0; i<tmp.size(); i++) 
+  for (int i=0; i<tmp.size(); i++)
     vec[begin++] = tmp[i];
 }
 
 void merge_sort(std::vector<int>& vec, int begin, int end) {
   if(begin < end) {
     int mid = (begin + end) / 2;
+#pragma omp task shared(vec)
     merge_sort(vec, begin, mid);
+#pragma omp task shared(vec)
     merge_sort(vec, mid+1, end);
+#pragma omp taskwait
     merge(vec, begin, mid, end);
   }
 }
@@ -37,8 +40,11 @@ int main() {
     printf("%d ",vec[i]);
   }
   printf("\n");
+#pragma omp parallel
+#pragma omp single 
   merge_sort(vec, 0, n-1);
   for (int i=0; i<n; i++) {
+
     printf("%d ",vec[i]);
   }
   printf("\n");
