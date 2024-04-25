@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
   for(int irank=0; irank<size; irank++) {
 
     MPI_Win win;
-    MPI_Win_create(jbody, N/size*sizeof(Body), sizeof(Body), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
+    MPI_Win_create(jbody, N/size*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
     MPI_Win_fence(0, win);
     MPI_Put(jbody, N/size, MPI_INT, send_to, 0, N/size, MPI_INT, win);
     MPI_Win_fence(0, win);
