@@ -1,3 +1,5 @@
 *.o
 *.out
 .ipynb_checkpoints
+*.exe
+.vscode
