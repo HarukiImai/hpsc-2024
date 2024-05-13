@@ -12,7 +12,6 @@ int main() {
     printf("%d ",key[i]);
   }
   printf("\n");
-
   std::vector<int> bucket(range,0); 
   #pragma omp parallel for shared(bucket)
   for (int i=0; i<n; i++)
@@ -30,6 +29,7 @@ int main() {
     offset[i] += buffer[i-j]; 
   }
   for (int i=1; i<range; i++) 
+
     offset[i] = offset[i-1] + bucket[i-1];
     #pragma omp parallel for shared(offset)
   for (int i=0; i<range; i++) {
